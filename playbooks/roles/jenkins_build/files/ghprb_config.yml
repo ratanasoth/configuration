@@ -1,0 +1,30 @@
+---
+SERVER_API_URL: 'https://api.github.com'
+ACCESS_TOKEN: ''
+ADMIN_LIST: ''
+REQUEST_TESTING_PHRASE: ''
+WHITE_LIST_PHRASE: '.*[Aa]dd\W+to\W+whitelist.*'
+OK_PHRASE: '.*ok\W+to\W+test.*'
+RETEST_PHRASE: '.*jenkins\W+run\W+all.*'
+SKIP_PHRASE: '.*\[[Ss]kip\W+ci\].*'
+CRON_SCHEDULE: 'H/5 * * * *'
+USE_COMMENTS: false
+USE_DETAILED_COMMENTS: false
+MANAGE_WEBHOOKS: false
+UNSTABLE_AS: 'failure'
+AUTO_CLOSE_FAILED_PRS: false
+DISPLAY_ERRORS_DOWNSTREAM: true
+BLACK_LIST_LABELS:
+    - 'blacklist-label-1'
+    - 'blacklist-label-2'
+WHITE_LIST_LABELS:
+    - 'whitelist-label-1'
+    - 'whitelist-label-2'
+SIMPLE_STATUS: ''
+PUBLISH_JENKINS_URL: ''
+BUILD_LOG_LINES_TO_DISPLAY: 0
+RESULT_MESSAGES:
+    - STATUS: 'failure'
+      MESSAGE: 'Test FAILed.'
+    - STATUS: 'success'
+      MESSAGE: 'Test PASSed.'
