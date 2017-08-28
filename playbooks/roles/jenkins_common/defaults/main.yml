@@ -19,7 +19,6 @@ jenkins_debian_pkgs:
   - daemon
   - psmisc
 
-jenkins_plugins: []
 jenkins_configuration_scripts: []
 
 jenkins_configuration_git_url: https://github.com/edx/jenkins-configuration.git

@@ -5,6 +5,7 @@ dependencies:
   - browsers
   - role: jenkins_common
     jenkins_debian_pkgs: "{{ build_jenkins_debian_pkgs }}"
+    jenkins_home: "{{ build_jenkins_home }}"
     jenkins_config_path: "{{ build_jenkins_config_path }}"
     jenkins_configuration_scripts: "{{ build_jenkins_configuration_scripts }}"
     jenkins_plugins: "{{ build_jenkins_plugins }}"
