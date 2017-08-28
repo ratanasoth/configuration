@@ -100,13 +100,19 @@
     - install
     - install:base
 
-- name: Add env vars
+- name: Add env var script
   template:
     src: "jenkins-env.sh.j2"
     dest: "/etc/profile.d/jenkins-env.sh"
-    owner: "{{ jenkins_user }}"
-    group: "{{ jenkins_group }}"
-    mode: "0755"
+    mode: "0640"
+
+- name: Source in bashrc
+  lineinfile: >
+    dest=/etc/bash.bashrc
+    state=present
+    regexp="^. /etc/profile.d/jenkins-env.sh"
+    line=". /etc/profile.d/jenkins-env.sh"
+    insertbefore=BOF
 
 - name: Download jenkins-configuration repo
   git:
@@ -115,6 +121,13 @@
   tags:
     - install
     - install:base
+
+- name: Run gradle libs
+  shell: "./gradlew libs"
+  args:
+    chdir: "{{ jenkins_git_home }}/jenkins-configuration"
+  environment:
+    UTILS_PATH: "{{ jenkins_home }}/utils"
 
 - name: Copy init scripts into init.groovy.d
   command: "cp {{ jenkins_git_home }}/jenkins-configuration/{{ jenkins_configuration_src_path }}/{{ item }} {{ jenkins_home }}/init.groovy.d/"
