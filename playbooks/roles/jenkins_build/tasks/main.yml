@@ -14,3 +14,9 @@
   environment:
     PLUGIN_OUTPUT_DIR: '{{ build_jenkins_home }}/plugins'
     PLUGIN_CONFIG: '{{ build_jenkins_config_path }}/plugins.yml'
+
+- name: Copy credentials into files
+  copy:
+    content: "{{ item.content }}"
+    dest: '{{ build_jenkins_config_path }}/credentials/{{ item.name }}'
+  with_items: '{{ BUILD_JENKINS_SECRET_FILES_LIST }}'

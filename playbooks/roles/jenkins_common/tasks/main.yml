@@ -80,6 +80,15 @@
      - install
      - install:base
 
+- name: Create credentials directory
+  file:
+    path: '{{ jenkins_config_path }}/credentials'
+    state: directory
+    owner: '{{ jenkins_user }}'
+  tags:
+     - install
+     - install:base
+
 - name: Create plugins directory
   file:
     path: '{{ jenkins_home }}/plugins'
