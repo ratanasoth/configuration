@@ -89,6 +89,24 @@
      - install
      - install:base
 
+- name: Create ec2 directory
+  file:
+    path: '{{ jenkins_config_path }}/ec2'
+    state: directory
+    owner: '{{ jenkins_user }}'
+  tags:
+     - install
+     - install:base
+
+- name: Create xml directory
+  file:
+    path: '{{ jenkins_config_path }}/xml'
+    state: directory
+    owner: '{{ jenkins_user }}'
+  tags:
+     - install
+     - install:base
+
 - name: Create plugins directory
   file:
     path: '{{ jenkins_home }}/plugins'

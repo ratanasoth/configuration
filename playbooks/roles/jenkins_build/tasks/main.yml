@@ -1,6 +1,6 @@
 ---
-- name: Copy config documents
-  template: src={{item}} dest='{{ build_jenkins_config_path }}/'
+- name: Copy config files
+  template: src={{ item }} dest='{{ build_jenkins_config_path }}/'
   with_fileglob:
     - '{{ role_path }}/files/*'
   tags:
