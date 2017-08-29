@@ -1,10 +1,10 @@
 ---
 - name: Install jenkins specific system packages
   apt:
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: present
     update_cache: yes
-  with_items: "{{ jenkins_debian_pkgs }}"
+  with_items: '{{ jenkins_debian_pkgs }}'
   tags:
     - jenkins
     - install
@@ -12,7 +12,7 @@
 
 - name: Create jenkins group
   group:
-    name: "{{ jenkins_group }}"
+    name: '{{ jenkins_group }}'
     state: present
   tags:
     - install
@@ -20,9 +20,9 @@
 
 - name: Add the jenkins user to the group
   user:
-    name: "{{ jenkins_user }}"
+    name: '{{ jenkins_user }}'
     append: yes
-    groups: "{{ jenkins_group }}"
+    groups: '{{ jenkins_group }}'
   tags:
     - install
     - install:system-requirements
@@ -31,14 +31,14 @@
   file:
     path: /usr/share/jenkins
     state: directory
-    owner: "{{ jenkins_user }}"
+    owner: '{{ jenkins_user }}'
   tags:
     - install
     - install:system-requirements
 
 - name: Download Jenkins war file
   get_url:
-    url: "{{ jenkins_war_url }}"
+    url: '{{ jenkins_war_url }}'
     dest: /usr/share/jenkins/jenkins.war
   tags:
     - install
@@ -46,46 +46,46 @@
 
 - name: Create init.groovy.d directory
   file:
-    path: "{{ jenkins_home }}/init.groovy.d"
+    path: '{{ jenkins_home }}/init.groovy.d'
     state: directory
-    owner: "{{ jenkins_user }}"
+    owner: '{{ jenkins_user }}'
   tags:
      - install
      - install:base
 
 - name: Create jenkins_config_path directory
   file:
-    path: "{{ jenkins_config_path }}"
+    path: '{{ jenkins_config_path }}'
     state: directory
-    owner: "{{ jenkins_user }}"
+    owner: '{{ jenkins_user }}'
   tags:
     - install
     - install:base
 
 - name: Create utils directory
   file:
-    path: "{{ jenkins_home }}/utils"
+    path: '{{ jenkins_home }}/utils'
     state: directory
-    owner: "{{ jenkins_user }}"
+    owner: '{{ jenkins_user }}'
   tags:
      - install
      - install:base
 
 - name: Create jenkins config directory
   file:
-    path: "{{ jenkins_config_path }}"
+    path: '{{ jenkins_config_path }}'
     state: directory
-    owner: "{{ jenkins_user }}"
+    owner: '{{ jenkins_user }}'
   tags:
      - install
      - install:base
 
 - name: Create plugins directory
   file:
-    path: "{{ jenkins_home }}/plugins"
+    path: '{{ jenkins_home }}/plugins'
     state: directory
-    owner: "{{ jenkins_user }}"
-    group: "{{ jenkins_group }}"
+    owner: '{{ jenkins_user }}'
+    group: '{{ jenkins_group }}'
   tags:
      - install
      - install:base
@@ -93,61 +93,61 @@
 
 - name: Create folder for git repositories
   file:
-    path: "{{ jenkins_git_home }}"
+    path: '{{ jenkins_git_home }}'
     state: directory
-    owner: "{{ jenkins_user }}"
+    owner: '{{ jenkins_user }}'
   tags:
     - install
     - install:base
 
 - name: Add env var script
   template:
-    src: "jenkins-env.sh.j2"
-    dest: "/etc/profile.d/jenkins-env.sh"
-    mode: "0640"
+    src: 'jenkins-env.sh.j2'
+    dest: '/etc/profile.d/jenkins-env.sh'
+    mode: '0640'
 
 - name: Source in bashrc
   lineinfile: >
     dest=/etc/bash.bashrc
     state=present
-    regexp="^. /etc/profile.d/jenkins-env.sh"
-    line=". /etc/profile.d/jenkins-env.sh"
+    regexp='^. /etc/profile.d/jenkins-env.sh'
+    line='. /etc/profile.d/jenkins-env.sh'
     insertbefore=BOF
 
 - name: Download jenkins-configuration repo
   git:
-      repo: "{{ jenkins_configuration_git_url }}"
-      dest: "{{ jenkins_git_home }}/jenkins-configuration"
+      repo: '{{ jenkins_configuration_git_url }}'
+      dest: '{{ jenkins_git_home }}/jenkins-configuration'
   tags:
     - install
     - install:base
 
 - name: Run gradle libs
-  shell: "./gradlew libs"
+  shell: './gradlew libs'
   args:
-    chdir: "{{ jenkins_git_home }}/jenkins-configuration"
+    chdir: '{{ jenkins_git_home }}/jenkins-configuration'
   environment:
-    UTILS_PATH: "{{ jenkins_home }}/utils"
+    UTILS_PATH: '{{ jenkins_home }}/utils'
 
 - name: Copy init scripts into init.groovy.d
-  command: "cp {{ jenkins_git_home }}/jenkins-configuration/{{ jenkins_configuration_src_path }}/{{ item }} {{ jenkins_home }}/init.groovy.d/"
-  with_items: "{{ jenkins_configuration_scripts }}"
+  command: 'cp {{ jenkins_git_home }}/jenkins-configuration/{{ jenkins_configuration_src_path }}/{{ item }} {{ jenkins_home }}/init.groovy.d/'
+  with_items: '{{ jenkins_configuration_scripts }}'
   tags:
     - install
     - install:base
 
 - name: Setup nginx vhost
   template:
-    src: "etc/nginx/sites-available/jenkins.j2"
-    dest: "{{ nginx_sites_available_dir }}/jenkins"
+    src: 'etc/nginx/sites-available/jenkins.j2'
+    dest: '{{ nginx_sites_available_dir }}/jenkins'
   tags:
     - install
     - install:vhosts
 
 - name: Enable jenkins vhost
   file:
-    src: "{{ nginx_sites_available_dir }}/jenkins"
-    dest: "{{ nginx_sites_enabled_dir }}/jenkins"
+    src: '{{ nginx_sites_available_dir }}/jenkins'
+    dest: '{{ nginx_sites_enabled_dir }}/jenkins'
     state: link
   tags:
     - install

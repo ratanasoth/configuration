@@ -1,16 +1,16 @@
 ---
 - name: Copy config documents
-  copy:
-    src: "{{ role_path }}/files/"
-    dest: "{{ build_jenkins_config_path }}/"
+  template: src={{item}} dest='{{ build_jenkins_config_path }}/'
+  with_fileglob:
+    - '{{ role_path }}/files/*'
   tags:
     - install
     - install:system-requirements
 
 - name: Run plugins.gradle
-  shell: "./gradlew -b plugins.gradle plugins"
+  shell: './gradlew -b plugins.gradle plugins'
   args:
-    chdir: "{{ jenkins_git_home }}/jenkins-configuration"
+    chdir: '{{ jenkins_git_home }}/jenkins-configuration'
   environment:
-    PLUGIN_OUTPUT_DIR: "{{ build_jenkins_home }}/plugins"
-    PLUGIN_CONFIG: "{{ build_jenkins_config_path }}/plugins.yml"
+    PLUGIN_OUTPUT_DIR: '{{ build_jenkins_home }}/plugins'
+    PLUGIN_CONFIG: '{{ build_jenkins_config_path }}/plugins.yml'
