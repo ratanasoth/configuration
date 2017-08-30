@@ -1,0 +1,9 @@
+[Unit]
+Description=Jenkins
+
+[Service]
+User=root
+ExecStart=/usr/bin/java -jar /usr/share/jenkins/jenkins.war --httpPort={{ jenkins_port }}
+
+[Install]
+WantedBy=multi-user.target

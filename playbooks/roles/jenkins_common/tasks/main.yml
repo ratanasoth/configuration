@@ -51,19 +51,21 @@
     - install
     - install:app-requirements
 
-- name: Add env var script
+- name: Add Jenkins systemd configuration
   template:
-    src: 'jenkins-env.sh.j2'
-    dest: '/etc/profile.d/jenkins-env.sh'
-    mode: '0640'
+    src:  "etc/systemd/system/jenkins.service.j2"
+    dest: "/etc/systemd/system/jenkins.service"
+  tags:
+    - install
+    - install:app-requirements
 
-- name: Source in bashrc
-  lineinfile: >
-    dest=/etc/bash.bashrc
-    state=present
-    regexp='^. /etc/profile.d/jenkins-env.sh'
-    line='. /etc/profile.d/jenkins-env.sh'
-    insertbefore=BOF
+- name: Add env vars
+  template:
+    src: "jenkins-env.sh.j2"
+    dest: "/etc/profile.d/jenkins-env.sh"
+    owner: root
+    group: root
+    mode: "0755"
 
 - name: Download jenkins-configuration repo
   git:

@@ -16,7 +16,21 @@
   template: src={{ item }} dest='{{ build_jenkins_config_path }}/'
   with_fileglob:
     - '{{ role_path }}/files/*'
+  tags:
+    - install
+    - install:app-requirements
+
+- name: Copy ec2 config files
+  template: src={{ item }} dest='{{ build_jenkins_config_path }}/ec2/'
+  with_fileglob:
     - '{{ role_path }}/files/ec2/*'
+  tags:
+    - install
+    - install:app-requirements
+
+- name: Copy xml config files
+  template: src={{ item }} dest='{{ build_jenkins_config_path }}/xml/'
+  with_fileglob:
     - '{{ role_path }}/files/xml/*'
   tags:
     - install
@@ -41,3 +55,9 @@
   tags:
     - install
     - install:app-requirements
+
+- name: Start Jenkins Service
+  systemd:
+    name: jenkins
+    daemon_reload: yes
+    state: restarted
