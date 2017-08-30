@@ -1,11 +1,26 @@
 ---
+- name: Create jenkins config sub folders
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ jenkins_user }}'
+  with_items:
+    - '{{ jenkins_config_path }}/credentials'
+    - '{{ jenkins_config_path }}/ec2'
+    - '{{ jenkins_config_path }}/xml'
+  tags:
+     - install
+     - install:base
+
 - name: Copy config files
   template: src={{ item }} dest='{{ build_jenkins_config_path }}/'
   with_fileglob:
     - '{{ role_path }}/files/*'
+    - '{{ role_path }}/files/ec2/*'
+    - '{{ role_path }}/files/xml/*'
   tags:
     - install
-    - install:system-requirements
+    - install:app-requirements
 
 - name: Run plugins.gradle
   shell: './gradlew -b plugins.gradle plugins'
@@ -14,9 +29,15 @@
   environment:
     PLUGIN_OUTPUT_DIR: '{{ build_jenkins_home }}/plugins'
     PLUGIN_CONFIG: '{{ build_jenkins_config_path }}/plugins.yml'
+  tags:
+    - install
+    - install:app-requirements
 
 - name: Copy credentials into files
   copy:
     content: "{{ item.content }}"
     dest: '{{ build_jenkins_config_path }}/credentials/{{ item.name }}'
   with_items: '{{ BUILD_JENKINS_SECRET_FILES_LIST }}'
+  tags:
+    - install
+    - install:app-requirements
