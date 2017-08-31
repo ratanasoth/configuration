@@ -63,6 +63,7 @@
     content: "{{ item.content }}"
     dest: '{{ build_jenkins_config_path }}/credentials/{{ item.name }}'
   with_items: '{{ BUILD_JENKINS_SECRET_FILES_LIST }}'
+  no_log: yes
   tags:
     - install
     - install:app-requirements
