@@ -2,7 +2,8 @@
 Description=Jenkins
 
 [Service]
-User=root
+Environment=JENKINS_HOME={{ jenkins_home }}
+Environment=JENKINS_CONFIG_PATH={{ jenkins_config_path }}
 ExecStart=/usr/bin/java -jar /usr/share/jenkins/jenkins.war --httpPort={{ jenkins_port }}
 
 [Install]

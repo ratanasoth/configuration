@@ -4,8 +4,8 @@ jenkins_home: /var/lib/jenkins
 jenkins_config_path: /init-configs
 jenkins_port: 8080
 
-jenkins_war_name: jenkins_1.651.3.war
-jenkins_war_url: https://s3.amazonaws.com/edx-testeng-tools/jenkins/{{ jenkins_war_name }}
+jenkins_version: jenkins_1.651.3
+jenkins_war_source: https://s3.amazonaws.com/edx-testeng-tools/jenkins
 
 jenkins_nginx_port: 80
 jenkins_protocol_https: true

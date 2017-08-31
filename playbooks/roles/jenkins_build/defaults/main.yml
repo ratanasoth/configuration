@@ -1,3 +1,6 @@
+build_jenkins_version: jenkins_1.651.3
+build_jenkins_war_source: https://s3.amazonaws.com/edx-testeng-tools/jenkins
+
 build_jenkins_debian_pkgs:
   - git
   - curl

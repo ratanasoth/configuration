@@ -45,7 +45,7 @@
 
 - name: Download Jenkins war file
   get_url:
-    url: '{{ jenkins_war_url }}'
+    url: '{{ jenkins_war_source }}/{{ jenkins_version }}.war'
     dest: /usr/share/jenkins/jenkins.war
   tags:
     - install
@@ -81,6 +81,7 @@
     chdir: '{{ jenkins_git_home }}/jenkins-configuration'
   environment:
     UTILS_PATH: '{{ jenkins_home }}/utils'
+    JENKINS_VERSION: '{{ jenkins_version }}'
 
 - name: Copy init scripts into init.groovy.d
   command: 'cp {{ jenkins_git_home }}/jenkins-configuration/{{ jenkins_configuration_src_path }}/{{ item }} {{ jenkins_home }}/init.groovy.d/'
@@ -105,3 +106,8 @@
   tags:
     - install
     - install:vhosts
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started

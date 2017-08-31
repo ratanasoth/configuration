@@ -4,6 +4,8 @@ dependencies:
   - edxapp_common
   - browsers
   - role: jenkins_common
+    jenkins_version: '{{ build_jenkins_version }}'
+    jenkins_war_source: '{{ build_jenkins_war_source }}'
     jenkins_debian_pkgs: '{{ build_jenkins_debian_pkgs }}'
     jenkins_home: '{{ build_jenkins_home }}'
     jenkins_config_path: '{{ build_jenkins_config_path }}'
