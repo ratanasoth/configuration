@@ -4,7 +4,6 @@ build_jenkins_war_source: https://s3.amazonaws.com/edx-testeng-tools/jenkins
 build_jenkins_debian_pkgs:
   - git
   - curl
-  - openjdk-8-jdk
   - nginx
   - maven
   - daemon
