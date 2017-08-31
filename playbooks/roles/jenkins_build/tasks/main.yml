@@ -12,6 +12,22 @@
      - install
      - install:base
 
+- name: Copy security j2 file
+  template:
+    src: '{{ role_path }}/templates/security.yml.j2'
+    dest: '{{ build_jenkins_config_path }}/security.yml'
+  tags:
+    - install
+    - install:app-requirements
+
+- name: Copy credentials j2 file
+  template:
+    src: '{{ role_path }}/templates/credentials.yml.j2'
+    dest: '{{ build_jenkins_config_path }}/credentials.yml'
+  tags:
+    - install
+    - install:app-requirements
+
 - name: Copy config files
   template: src={{ item }} dest='{{ build_jenkins_config_path }}/'
   with_fileglob:
