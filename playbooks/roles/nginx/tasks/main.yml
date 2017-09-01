@@ -141,7 +141,6 @@
     - install
     - install:configuration
 
-# TODO Make the services write their own config files so that we don't need a template for each one.
 - name: Copying nginx configs for {{ nginx_sites }}
   template:
     src: "{{ nginx_template_dir }}/{{ item }}.j2"
